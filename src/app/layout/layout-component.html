@@ -1,18 +1,25 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>Mi App</span>
-</mat-toolbar>
-<mat-sidenav-container class="container">
-  <mat-sidenav #sidenav mode="side" opened>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
     <mat-nav-list>
-      <a mat-list-item routerLink="/home" routerLinkActive="active">Home</a>
-      <a mat-list-item routerLink="/create" routerLinkActive="active">Create</a>
-      <a mat-list-item routerLink="/list" routerLinkActive="active">List</a>
+      <a
+        *ngFor="let route of routes"
+        mat-list-item
+        [routerLink]="route.path"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon aria-hidden="false" fontIcon="{{  route.data?.['icon'] }}" />
+        {{ route.data?.['label'] }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <div style="height: 88vh">
+      <mat-toolbar class="toolbar-bgcolor">
+        <button mat-icon-button aria-label="Menu" (click)="sidenav.open()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
