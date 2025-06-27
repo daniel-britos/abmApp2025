@@ -1,29 +1,58 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileuploadService {
-  //private baseUrl = 'http://localhost:8080';
-  private baseUrl = 'http://localhost:4200/';
+  // ¡CAMBIAR ESTO POR LA URL REAL DE TU BACKEND!
+  private apiUrl = 'http://localhost:3000/api/upload-file';
 
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
-  upload(file: File): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
+  /**
+   * Sube un archivo al servidor.
+   * @param file El objeto File a subir.
+   * @param extraData Objeto opcional con datos adicionales para enviar junto al archivo.
+   * @returns Un Observable que emite eventos de progreso y la respuesta final.
+   */
+  uploadFile(
+    file: File,
+    extraData?: { [key: string]: any }
+  ): Observable<number | string> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
 
-    formData.append('file', file);
+    if (extraData) {
+      for (const key in extraData) {
+        if (extraData.hasOwnProperty(key)) {
+          formData.append(key, extraData[key]);
+        }
+      }
+    }
 
-    const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {
-      responseType: 'json',
-    });
-
-    return this.http.request(req);
-  }
-
-  getFiles(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/files`);
+    return this.http
+      .post(this.apiUrl, formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        map((event) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const percentDone = Math.round(
+                (100 * event.loaded) / (event.total || 1)
+              );
+              return percentDone;
+            case HttpEventType.Response:
+              return 'Carga completada';
+            default:
+              return `Evento: ${event.type}`;
+          }
+        })
+      );
   }
 }

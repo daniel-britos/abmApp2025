@@ -1,0 +1,25 @@
+<form [formGroup]="formImage" (submit)="saveChanges()">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" [formControl]="formImage.controls.name" />
+  </mat-form-field>
+
+  <div>
+    <button mat-raised-button type="button" (click)="fileInput.click()">
+      Select Image
+    </button>
+    <input
+      type="file"
+      class="input-image"
+      [formControl]="formImage.controls.name"
+      #fileInput
+      accept="image/*"
+      (change)="selectedImage($event)"
+    />
+  </div>
+  <div>
+    @if (base64Image) {
+    <img height="250" [src]="base64Image" alt="profile" />
+    }
+  </div>
+</form>

@@ -1,0 +1,62 @@
+.file-upload-card {
+  max-width: 450px;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.file-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #3f51b5;
+  word-break: break-all;
+}
+
+.upload-status-container {
+  margin-top: 20px;
+}
+
+.status-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.status-icon {
+  font-size: 1.2em;
+}
+
+.status-icon.success {
+  color: #4caf50;
+}
+
+.status-icon.error {
+  color: #f44336;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.icon-delete {
+  color: red;
+}

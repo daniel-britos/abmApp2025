@@ -1,3 +1,70 @@
-<label>
-  <input type="file" />
-</label>
+<mat-card class="file-upload-card">
+  <mat-card-header>
+    <mat-card-title>Subir Archivo PDF</mat-card-title>
+    <mat-card-subtitle>Selecciona y sube tu documento</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <input
+      type="file"
+      #fileInput
+      hidden
+      (change)="onFileSelected($event)"
+      accept=".pdf"
+    />
+
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      <mat-icon>cloud_upload</mat-icon> Seleccionar Archivo
+    </button>
+
+    <div *ngIf="selectedFile" class="file-info-container">
+      <p class="file-name">
+        <mat-icon color="accent">description</mat-icon>
+        **{{ fileName }}** ({{ formatBytes(fileSize) }})
+      </p>
+      <button
+        matFab
+        aria-label="delete"
+        class="btn-delete"
+        (click)="removeFile()"
+        aria-label="Eliminar archivo"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="uploadStatus !== 'idle'" class="upload-status-container">
+      <mat-progress-bar
+        *ngIf="uploadStatus === 'inProgress'"
+        mode="determinate"
+        [value]="uploadProgress"
+      ></mat-progress-bar>
+      <p class="status-text">
+        <ng-container [ngSwitch]="uploadStatus">
+          <ng-container *ngSwitchCase="'inProgress'">
+            Subiendo... {{ uploadProgress }}%
+          </ng-container>
+          <ng-container *ngSwitchCase="'completed'">
+            <mat-icon class="status-icon success">check_circle</mat-icon>
+            ¡Subida Completada!
+          </ng-container>
+          <ng-container *ngSwitchCase="'error'">
+            <mat-icon class="status-icon error">error</mat-icon> Error al subir
+            el archivo.
+          </ng-container>
+        </ng-container>
+      </p>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button
+      matButton="outlined"
+      class="btn-send"
+      (click)="uploadFile()"
+      [disabled]="!selectedFile || uploadStatus === 'inProgress'"
+    >
+      Send
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +20,7 @@ import { FEATURES_ROUTES } from '../features/features.routes';
     MatIconModule,
     MatListModule,
     MatIconModule,
+    HttpClientModule,
   ],
   templateUrl: './layout-component.html',
   styleUrl: './layout-component.scss',
