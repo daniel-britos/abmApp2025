@@ -22,4 +22,10 @@
     <img height="250" [src]="base64Image" alt="profile" />
     }
   </div>
+
+  <div>
+    <button mat-flat-button type="submit" [disabled]="formImage.invalid">
+      Send Image
+    </button>
+  </div>
 </form>
